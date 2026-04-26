@@ -10,10 +10,10 @@
       margin: 0;
       height: 100vh;
       overflow: hidden;
-      background: radial-gradient(circle at center, #2b0033, #000000);
+      background: radial-gradient(circle, #2b0033, #000);
       color: white;
       text-align: center;
-      font-family: Arial, sans-serif;
+      font-family: Arial;
     }
 
     button {
@@ -24,7 +24,6 @@
       border: none;
       background: pink;
       cursor: pointer;
-      box-shadow: 0 0 10px pink;
     }
 
     #letra {
@@ -36,26 +35,15 @@
       transition: opacity 0.5s;
     }
 
-    audio {
-      margin-top: 20px;
-    }
-
     .corazon {
       position: absolute;
       color: pink;
       animation: flotar 6s linear infinite;
-      pointer-events: none;
     }
 
     @keyframes flotar {
-      0% {
-        transform: translateY(100vh);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh);
-        opacity: 0;
-      }
+      0% { transform: translateY(100vh); }
+      100% { transform: translateY(-10vh); }
     }
   </style>
 </head>
@@ -63,8 +51,6 @@
 <body>
 
 <button onclick="iniciar()">Entrar 💖</button>
-
-<br>
 
 <audio id="musica" style="display:none;">
   <source src="cancion.mp3" type="audio/mpeg">
@@ -74,12 +60,48 @@
 
 <script>
 const letras = [
-  { texto: "Contigo aprendí...", tiempo: 5 },
-  { texto: "Que existen nuevas emociones...", tiempo: 9 },
-  { texto: "Contigo aprendí...", tiempo: 15 },
-  { texto: "A conocer un mundo nuevo...", tiempo: 19 },
-  { texto: "Y a ser feliz contigo 💖", tiempo: 25 }
+  { texto: "Tus besos se llegaron a recrear", tiempo: 10 },
+  { texto: "Aquí en mi boca", tiempo: 14 },
+  { texto: "Llenando de ilusión y de pasión", tiempo: 18 },
+  { texto: "Mi vida loca", tiempo: 22 },
+
+  { texto: "Las horas más felices de mi amor", tiempo: 27 },
+  { texto: "Fueron contigo", tiempo: 31 },
+  { texto: "Por eso es que mi alma siempre extraña", tiempo: 35 },
+  { texto: "El dulce alivio", tiempo: 40 },
+
+  { texto: "Te puedo yo jurar ante un altar", tiempo: 45 },
+  { texto: "Mi amor sincero", tiempo: 49 },
+  { texto: "A todo el mundo le puedes contar", tiempo: 53 },
+  { texto: "Que sí te quiero", tiempo: 58 },
+
+  { texto: "Tus labios me enseñaron a sentir", tiempo: 63 },
+  { texto: "Lo que es ternura", tiempo: 67 },
+  { texto: "Y no me cansaré de bendecir", tiempo: 71 },
+  { texto: "Tanta dulzura", tiempo: 76 },
+
+  { texto: "Tus besos se llegaron a recrear", tiempo: 82 },
+  { texto: "Aquí en mi boca", tiempo: 86 },
+  { texto: "Llenando de ilusión y de pasión", tiempo: 90 },
+  { texto: "Mi vida loca", tiempo: 94 },
+
+  { texto: "Las horas más felices de mi amor", tiempo: 99 },
+  { texto: "Fueron contigo", tiempo: 103 },
+  { texto: "Por eso es que mi alma siempre extraña", tiempo: 107 },
+  { texto: "El dulce alivio", tiempo: 112 },
+
+  { texto: "Te puedo yo jurar ante un altar", tiempo: 117 },
+  { texto: "Mi amor sincero", tiempo: 121 },
+  { texto: "A todo el mundo le puedes contar", tiempo: 125 },
+  { texto: "Que sí te quiero", tiempo: 130 },
+
+  { texto: "Tus labios me enseñaron a sentir", tiempo: 135 },
+  { texto: "Lo que es ternura", tiempo: 139 },
+  { texto: "Y no me cansaré de bendecir", tiempo: 143 },
+  { texto: "Tanta dulzura 💖", tiempo: 148 }
 ];
+
+let ultimaLinea = "";
 
 function iniciar() {
   const audio = document.getElementById("musica");
@@ -87,33 +109,41 @@ function iniciar() {
 
   audio.play();
 
-  // 💕 corazones
+  document.querySelector("button").style.display = "none";
+
+  // corazones
   setInterval(() => {
     let corazon = document.createElement("div");
     corazon.innerHTML = "💖";
     corazon.className = "corazon";
     corazon.style.left = Math.random() * 100 + "vw";
-    corazon.style.fontSize = (Math.random() * 20 + 15) + "px";
 
     document.body.appendChild(corazon);
 
     setTimeout(() => corazon.remove(), 6000);
   }, 400);
 
-  // 🎵 sincronización real
+  // sincronización real sin parpadeo
   audio.ontimeupdate = () => {
     let t = audio.currentTime;
 
-    letras.forEach(linea => {
-      if (t >= linea.tiempo && t < linea.tiempo + 2) {
-        letra.style.opacity = 0;
+    for (let i = 0; i < letras.length; i++) {
+      if (t >= letras[i].tiempo && t < letras[i].tiempo + 3) {
 
-        setTimeout(() => {
-          letra.innerText = linea.texto;
-          letra.style.opacity = 1;
-        }, 200);
+        if (ultimaLinea !== letras[i].texto) {
+          ultimaLinea = letras[i].texto;
+
+          letra.style.opacity = 0;
+
+          setTimeout(() => {
+            letra.innerText = letras[i].texto;
+            letra.style.opacity = 1;
+          }, 200);
+        }
+
+        break;
       }
-    });
+    }
   };
 }
 </script>
