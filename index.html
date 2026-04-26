@@ -10,10 +10,10 @@
       margin: 0;
       height: 100vh;
       overflow: hidden;
-      background: radial-gradient(circle, #2b0033, #000);
+      background: radial-gradient(circle at center, #2b0033, #000000);
       color: white;
       text-align: center;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
     }
 
     button {
@@ -24,6 +24,7 @@
       border: none;
       background: pink;
       cursor: pointer;
+      box-shadow: 0 0 10px pink;
     }
 
     #letra {
@@ -32,17 +33,29 @@
       width: 100%;
       font-size: 6vw;
       text-shadow: 0 0 15px pink;
+      transition: opacity 0.5s;
+    }
+
+    audio {
+      margin-top: 20px;
     }
 
     .corazon {
       position: absolute;
       color: pink;
       animation: flotar 6s linear infinite;
+      pointer-events: none;
     }
 
     @keyframes flotar {
-      0% { transform: translateY(100vh); }
-      100% { transform: translateY(-10vh); }
+      0% {
+        transform: translateY(100vh);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
     }
   </style>
 </head>
@@ -50,6 +63,8 @@
 <body>
 
 <button onclick="iniciar()">Entrar 💖</button>
+
+<br>
 
 <audio id="musica" controls>
   <source src="cancion.mp3" type="audio/mpeg">
@@ -60,12 +75,10 @@
 <script>
 const letras = [
   { texto: "Contigo aprendí...", tiempo: 5 },
-  { texto: "Que existen nuevas y mejores emociones...", tiempo: 10 },
-  { texto: "Contigo aprendí...", tiempo: 16 },
-  { texto: "A conocer un mundo nuevo de ilusiones...", tiempo: 20 },
-  { texto: "Aprendí que la semana tiene más de siete días...", tiempo: 26 },
-  { texto: "A hacer mayores mis contadas alegrías...", tiempo: 34 },
-  { texto: "Y a ser dichoso yo contigo lo aprendí 💖", tiempo: 42 }
+  { texto: "Que existen nuevas emociones...", tiempo: 9 },
+  { texto: "Contigo aprendí...", tiempo: 15 },
+  { texto: "A conocer un mundo nuevo...", tiempo: 19 },
+  { texto: "Y a ser feliz contigo 💖", tiempo: 25 }
 ];
 
 function iniciar() {
@@ -74,28 +87,33 @@ function iniciar() {
 
   audio.play();
 
-  // corazones
+  // 💕 corazones
   setInterval(() => {
     let corazon = document.createElement("div");
     corazon.innerHTML = "💖";
     corazon.className = "corazon";
     corazon.style.left = Math.random() * 100 + "vw";
+    corazon.style.fontSize = (Math.random() * 20 + 15) + "px";
 
     document.body.appendChild(corazon);
 
     setTimeout(() => corazon.remove(), 6000);
   }, 400);
 
-  // sincronización
+  // 🎵 sincronización real
   audio.ontimeupdate = () => {
     let t = audio.currentTime;
 
-    for (let i = 0; i < letras.length; i++) {
-      if (t >= letras[i].tiempo && t < letras[i].tiempo + 3) {
-        letra.innerText = letras[i].texto;
-        break;
+    letras.forEach(linea => {
+      if (t >= linea.tiempo && t < linea.tiempo + 2) {
+        letra.style.opacity = 0;
+
+        setTimeout(() => {
+          letra.innerText = linea.texto;
+          letra.style.opacity = 1;
+        }, 200);
       }
-    }
+    });
   };
 }
 </script>
