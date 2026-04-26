@@ -20,11 +20,16 @@
 
       color: white;
       text-align: center;
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
 
+    /* 💓 botón */
     button {
-      margin-top: 250px;
+      position: absolute;
+      top: calc(45% - 250px);
+      left: 50%;
+      transform: translateX(-50%);
+
       padding: 12px 25px;
       font-size: 18px;
       border-radius: 20px;
@@ -32,24 +37,33 @@
       background: pink;
       cursor: pointer;
       box-shadow: 0 0 10px pink;
+
+      animation: latido 2s infinite;
     }
 
+    /* 💖 texto */
     #letra {
       position: absolute;
       top: 45%;
       width: 100%;
       font-size: 7vw;
-      font-family: 'Poppins', sans-serif;
-      text-shadow: 0 0 20px pink;
+      text-shadow: 0 0 10px pink, 0 0 20px hotpink;
       transition: opacity 0.5s;
       letter-spacing: 2px;
     }
 
+    /* 💕 corazones */
     .corazon {
       position: absolute;
       color: pink;
       animation: flotar 6s linear infinite;
       pointer-events: none;
+    }
+
+    @keyframes latido {
+      0% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.08); }
+      100% { transform: translateX(-50%) scale(1); }
     }
 
     @keyframes flotar {
@@ -76,7 +90,6 @@
 <div id="letra">Presiona entrar 💕</div>
 
 <script>
-// ⚠️ NO TOQUÉ TUS TIEMPOS
 const letras = [
   { texto: "Tus besos se llegaron a recrear 💖", tiempo: 10 },
   { texto: "Aquí en mi boca 💕", tiempo: 14 },
@@ -85,8 +98,8 @@ const letras = [
 
   { texto: "Las horas más felices de mi amor 💖", tiempo: 27 },
   { texto: "Fueron contigo 💕", tiempo: 31 },
-  { texto: "Por eso es que mi alma siempre extraña ❤️", tiempo: 36 },
-  { texto: "El dulce alivio 💘", tiempo: 42 },
+  { texto: "Por eso es que mi alma siempre extraña ❤️", tiempo: 35 },
+  { texto: "El dulce alivio 💘", tiempo: 40 },
 
   { texto: "Te puedo yo jurar ante un altar 💖", tiempo: 45 },
   { texto: "Mi amor sincero 💕", tiempo: 49 },
@@ -98,38 +111,44 @@ const letras = [
   { texto: "Y no me cansaré de bendecir ❤️", tiempo: 71 },
   { texto: "Tanta dulzura 💘", tiempo: 76 },
 
-  { texto: "Tus besos se llegaron a recrear 💖", tiempo: 92 },
-  { texto: "Aquí en mi boca 💕", tiempo: 96 },
-  { texto: "Llenando de ilusión y de pasión ❤️", tiempo: 100 },
-  { texto: "Mi vida loca 💘", tiempo: 104 },
+  { texto: "Tus besos se llegaron a recrear 💖", tiempo: 82 },
+  { texto: "Aquí en mi boca 💕", tiempo: 86 },
+  { texto: "Llenando de ilusión y de pasión ❤️", tiempo: 90 },
+  { texto: "Mi vida loca 💘", tiempo: 94 },
 
-  { texto: "Las horas más felices de mi amor 💖", tiempo: 109 },
-  { texto: "Fueron contigo 💕", tiempo: 113 },
-  { texto: "Por eso es que mi alma siempre extraña ❤️", tiempo: 117 },
-  { texto: "El dulce alivio 💘", tiempo: 122 },
+  { texto: "Las horas más felices de mi amor 💖", tiempo: 99 },
+  { texto: "Fueron contigo 💕", tiempo: 103 },
+  { texto: "Por eso es que mi alma siempre extraña ❤️", tiempo: 107 },
+  { texto: "El dulce alivio 💘", tiempo: 112 },
 
-  { texto: "Te puedo yo jurar ante un altar 💖", tiempo: 127 },
-  { texto: "Mi amor sincero 💕", tiempo: 131 },
-  { texto: "A todo el mundo le puedes contar ❤️", tiempo: 135 },
-  { texto: "Que sí te quiero 💘", tiempo: 140 },
+  { texto: "Te puedo yo jurar ante un altar 💖", tiempo: 117 },
+  { texto: "Mi amor sincero 💕", tiempo: 121 },
+  { texto: "A todo el mundo le puedes contar ❤️", tiempo: 125 },
+  { texto: "Que sí te quiero 💘", tiempo: 130 },
 
-  { texto: "Tus labios me enseñaron a sentir 💖", tiempo: 145 },
-  { texto: "Lo que es ternura 💕", tiempo: 149 },
-  { texto: "Y no me cansaré de bendecir ❤️", tiempo: 153 },
-  { texto: "Tanta dulzura 💖", tiempo: 160 }
+  { texto: "Tus labios me enseñaron a sentir 💖", tiempo: 135 },
+  { texto: "Lo que es ternura 💕", tiempo: 139 },
+  { texto: "Y no me cansaré de bendecir ❤️", tiempo: 143 },
+  { texto: "Tanta dulzura 💖", tiempo: 148 }
 ];
 
 let ultimaLinea = "";
 
 function iniciar() {
+  const boton = document.querySelector("button");
   const audio = document.getElementById("musica");
   const letra = document.getElementById("letra");
 
-  audio.play();
+  // 💥 efecto toque celular
+  boton.style.transform = "translateX(-50%) scale(1.3)";
+  boton.style.boxShadow = "0 0 30px hotpink";
 
-  document.querySelector("button").style.display = "none";
+  setTimeout(() => {
+    boton.style.display = "none";
+    audio.play();
+  }, 300);
 
-  // corazones
+  // 💕 corazones
   setInterval(() => {
     let corazon = document.createElement("div");
     corazon.innerHTML = "💖";
@@ -142,7 +161,7 @@ function iniciar() {
     setTimeout(() => corazon.remove(), 6000);
   }, 400);
 
-  // sincronización sin parpadeo
+  // 🎵 sincronización
   audio.ontimeupdate = () => {
     let t = audio.currentTime;
 
